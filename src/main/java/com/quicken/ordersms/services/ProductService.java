@@ -1,11 +1,12 @@
 package com.quicken.ordersms.services;
 
+import com.quicken.ordersms.dtos.ProductDTO;
 import com.quicken.ordersms.entities.Product;
 
 import java.util.List;
 
 public interface ProductService {
-    Product addProduct(Product product);
-    List<Product> getAllProducts();
-    Product getProductById(Long productId);
+    ProductDTO addProduct(ProductDTO product);
+    List<ProductDTO> getAllProducts();
+    ProductDTO getProductById(Long productId);
 }

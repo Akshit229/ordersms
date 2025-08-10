@@ -1,8 +1,11 @@
 package com.quicken.ordersms.servicesImpl;
 
+import com.quicken.ordersms.dtos.ProductDTO;
 import com.quicken.ordersms.entities.Product;
+import com.quicken.ordersms.mapper.ProductMapper;
 import com.quicken.ordersms.repositories.ProductRepository;
 import com.quicken.ordersms.services.ProductService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -10,17 +13,17 @@ import org.springframework.web.server.ResponseStatusException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class ProductServiceImpl implements ProductService {
-
     private final ProductRepository productRepository;
-    public ProductServiceImpl(ProductRepository productRepository){
-        this.productRepository = productRepository;
-    }
+    private final ProductMapper productMapper;
 
     @Override
-    public Product addProduct(Product product) {
+    public ProductDTO addProduct(ProductDTO productDto) {
+        Product product = productMapper.toProduct(productDto);
         if (product.getName() == null || product.getName().trim().isEmpty()) {
             throw new IllegalArgumentException("Product name cannot be empty");
         }
@@ -35,17 +38,19 @@ public class ProductServiceImpl implements ProductService {
             throw new IllegalArgumentException("Product with the same name and price already exists");
         }
 
-        return productRepository.save(product);
+        Product savedProduct =  productRepository.save(product);
+        return productMapper.toProductDto(savedProduct);
     }
 
     @Override
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductDTO> getAllProducts() {
+        return productRepository.findAll().stream().map(productMapper::toProductDto).collect(Collectors.toList());
     }
 
     @Override
-    public Product getProductById(Long productId) {
-        return productRepository.findById(productId)
+    public ProductDTO getProductById(Long productId) {
+        Product p =  productRepository.findById(productId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
+        return productMapper.toProductDto(p);
     }
 }

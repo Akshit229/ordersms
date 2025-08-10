@@ -1,34 +1,36 @@
 package com.quicken.ordersms.servicesImpl;
 
+import com.quicken.ordersms.dtos.OrderDTO;
 import com.quicken.ordersms.dtos.OrderStatusDTO;
+import com.quicken.ordersms.dtos.ProductDTO;
 import com.quicken.ordersms.entities.Order;
 import com.quicken.ordersms.entities.Product;
 import com.quicken.ordersms.enums.OrderStatus;
+import com.quicken.ordersms.mapper.OrderMapper;
 import com.quicken.ordersms.repositories.OrderRepository;
 import com.quicken.ordersms.repositories.ProductRepository;
 import com.quicken.ordersms.services.OrderProcessingServiceAsync;
 import com.quicken.ordersms.services.OrderService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
     private final OrderProcessingServiceAsync orderProcessingServiceAsync;
-    public OrderServiceImpl(OrderRepository orderRepository, ProductRepository productRepository, OrderProcessingServiceAsync orderProcessingServiceAsync){
-        this.orderRepository = orderRepository;
-        this.productRepository = productRepository;
-        this.orderProcessingServiceAsync = orderProcessingServiceAsync;
-    }
+    private final OrderMapper orderMapper;
 
     @Override
-    public Order createNewOrder(Product product) {
-        Product existingProduct = productRepository.findById(product.getId())
+    public OrderDTO createNewOrder(OrderDTO orderDTO) {
+        Product existingProduct = productRepository.findById(orderDTO.getProduct().getId())
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
         Order order = new Order();
@@ -36,22 +38,26 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderStatus(OrderStatus.PENDING);
         Order savedOrder = orderRepository.save(order);
         orderProcessingServiceAsync.processOrderAsync(savedOrder.getId());
-        return savedOrder;
+        return orderMapper.toOrderDTO(savedOrder);
     }
 
     @Override
-    public Order getOrderById(Long orderId) {
-        return orderRepository.findById(orderId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found"));
+    public OrderDTO getOrderById(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found"));
+
+        return orderMapper.toOrderDTO(order);
     }
 
     @Override
     public OrderStatusDTO getOrderStatus(Long orderId) {
-        Order order = this.getOrderById(orderId);
-        return new OrderStatusDTO(orderId, order.getOrderStatus());
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found"));
+        return orderMapper.toOrderStatusDTO(order);
     }
 
     @Override
-    public List<Order> getAllOrders() {
-        return orderRepository.findAll();
+    public List<OrderDTO> getAllOrders() {
+        return orderRepository.findAll().stream().map(orderMapper::toOrderDTO).collect(Collectors.toList());
     }
 }
