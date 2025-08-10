@@ -17,6 +17,7 @@ public class Order {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private OrderStatus orderStatus;
 

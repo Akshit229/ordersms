@@ -4,6 +4,7 @@ import com.quicken.ordersms.enums.OrderStatus;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -18,6 +19,9 @@ public class Product {
 
     @Column(name = "price")
     private BigDecimal price;
+
+    @OneToMany(mappedBy = "product")
+    private List<Order> orderList;
 
     public Product() {
     }

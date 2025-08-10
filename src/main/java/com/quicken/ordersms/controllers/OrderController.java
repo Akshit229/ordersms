@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
@@ -29,9 +31,14 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(order);
     }
 
+    @GetMapping
+    public ResponseEntity<List<Order>> getAllOrders() {
+        return ResponseEntity.ok(orderService.getAllOrders());
+    }
+
     @GetMapping("/{id}")
-    public ResponseEntity<OrderStatusDTO> getOrderById(@PathVariable Long id) {
-        OrderStatusDTO orderStatusDTO = orderService.getOrderStatus(id);
-        return ResponseEntity.ok(orderStatusDTO);
+    public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
+        Order order = orderService.getOrderById(id);
+        return ResponseEntity.ok(order);
     }
 }
