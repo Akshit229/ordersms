@@ -7,6 +7,7 @@ import com.quicken.ordersms.services.OrderProcessingServiceAsync;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class OrderProcessingServiceAsyncImpl implements OrderProcessingServiceAsync {
     private final OrderRepository orderRepository;
+    @Value("${app.delay-ms}")
+    private long delayMs;
 
     @Async
     public void processOrderAsync(Long orderId) {
@@ -24,7 +27,7 @@ public class OrderProcessingServiceAsyncImpl implements OrderProcessingServiceAs
             orderRepository.save(order);
 
             // Simulate processing delay 3 seconds
-            Thread.sleep(3000);
+            Thread.sleep(delayMs);
 
             // Randomly decide completed or failed
             order.setOrderStatus(Math.random() > 0.5 ? OrderStatus.COMPLETED : OrderStatus.FAILED);

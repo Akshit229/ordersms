@@ -1,6 +1,7 @@
 spring:
   application:
     name: ordersms
+    delay-ms: 3000
   datasource:
     url: jdbc:mysql://localhost:3306/oms_dev?createDatabaseIfNotExist=true
     username: root
