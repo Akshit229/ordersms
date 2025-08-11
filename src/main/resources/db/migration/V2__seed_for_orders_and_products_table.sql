@@ -1,0 +1,33 @@
+INSERT INTO products (id, name, price) VALUES
+(1001, 'Laptop', 1200.00),
+(1002, 'Smartphone', 800.00),
+(1003, 'Headphones', 150.00),
+(1004, 'Smartwatch', 300.00),
+(1005, 'Tablet', 500.00),
+(1006, 'Gaming Console', 400.00),
+(1007, 'Bluetooth Speaker', 120.00),
+(1008, 'Monitor', 250.00),
+(1009, 'Keyboard', 60.00),
+(1010, 'Mouse', 40.00);
+
+INSERT INTO orders (id, status, product_id) VALUES
+(1001, 'COMPLETED', 1001),
+(1002, 'FAILED', 1002),
+(1003, 'COMPLETED', 1003),
+(1004, 'FAILED', 1004),
+(1005, 'COMPLETED', 1005),
+(1006, 'FAILED', 1006),
+(1007, 'COMPLETED', 1007),
+(1008, 'FAILED', 1008),
+(1009, 'COMPLETED', 1009),
+(1010, 'FAILED', 1010),
+(1011, 'COMPLETED', 1001),
+(1012, 'FAILED', 1002),
+(1013, 'COMPLETED', 1003),
+(1014, 'FAILED', 1004),
+(1015, 'COMPLETED', 1005),
+(1016, 'FAILED', 1006),
+(1017, 'COMPLETED', 1007),
+(1018, 'FAILED', 1008),
+(1019, 'COMPLETED', 1009),
+(1020, 'FAILED', 1010);
