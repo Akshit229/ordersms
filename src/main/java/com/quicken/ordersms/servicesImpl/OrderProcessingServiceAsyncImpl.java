@@ -5,17 +5,19 @@ import com.quicken.ordersms.enums.OrderStatus;
 import com.quicken.ordersms.repositories.OrderRepository;
 import com.quicken.ordersms.services.OrderProcessingServiceAsync;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
 public class OrderProcessingServiceAsyncImpl implements OrderProcessingServiceAsync {
     private final OrderRepository orderRepository;
-    @Value("${app.delay-ms}")
+    public OrderProcessingServiceAsyncImpl(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
+
+    @Value("${spring.application.delay-ms:3000}")
     private long delayMs;
 
     @Async
