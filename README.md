@@ -28,15 +28,7 @@ git clone https://github.com/Akshit229/ordersms.git
 
 ### Database Setup
 
-* By default, the application connects to a MySQL database named **`oms_dev`**.
-* Flyway will automatically create the database schema, tables, and insert dummy data during startup.
-* **If startup fails due to database not found**, create it manually:
-
-```sql
-CREATE DATABASE oms_dev;
-```
-
-* To use a custom database name, update `src/main/resources/application.yml`:
+* update `src/main/resources/application.yml` with database name, username and password:
 
 ```yaml
 spring:
@@ -45,7 +37,14 @@ spring:
     username: root
     password: root
 ```
+* Ensure the database user has appropriate permissions to read & write.
+* By default, the application connects to a MySQL database named **`oms_dev`**.
+* Flyway will automatically create the database schema, tables, and insert dummy data during startup.
+* **If startup fails due to database not found**, create it manually:
 
+```sql
+CREATE DATABASE oms_dev;
+```
 ---
 
 ### Run the Application
