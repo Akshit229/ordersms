@@ -2,6 +2,7 @@ package com.quicken.ordersms.servicesImpl;
 
 import com.quicken.ordersms.dtos.ProductDTO;
 import com.quicken.ordersms.entities.Product;
+import com.quicken.ordersms.exceptions.BadRequestException;
 import com.quicken.ordersms.mapper.ProductMapper;
 import com.quicken.ordersms.repositories.ProductRepository;
 import com.quicken.ordersms.services.ProductService;
@@ -25,17 +26,17 @@ public class ProductServiceImpl implements ProductService {
     public ProductDTO addProduct(ProductDTO productDto) {
         Product product = productMapper.toProduct(productDto);
         if (product.getName() == null || product.getName().trim().isEmpty()) {
-            throw new IllegalArgumentException("Product name cannot be empty");
+            throw new BadRequestException("Product name cannot be empty");
         }
         if (product.getPrice() == null || product.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Product price must be greater than zero");
+            throw new BadRequestException("Product price must be greater than zero");
         }
         boolean exists = productRepository
                 .findByNameAndPrice(product.getName().trim(), product.getPrice())
                 .isPresent();
 
         if (exists) {
-            throw new IllegalArgumentException("Product with the same name and price already exists");
+            throw new BadRequestException("Product with the same name and price already exists");
         }
 
         Product savedProduct =  productRepository.save(product);

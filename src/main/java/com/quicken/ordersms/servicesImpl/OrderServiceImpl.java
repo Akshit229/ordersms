@@ -6,6 +6,7 @@ import com.quicken.ordersms.dtos.ProductDTO;
 import com.quicken.ordersms.entities.Order;
 import com.quicken.ordersms.entities.Product;
 import com.quicken.ordersms.enums.OrderStatus;
+import com.quicken.ordersms.exceptions.BadRequestException;
 import com.quicken.ordersms.mapper.OrderMapper;
 import com.quicken.ordersms.repositories.OrderRepository;
 import com.quicken.ordersms.repositories.ProductRepository;
@@ -31,7 +32,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDTO createNewOrder(OrderDTO orderDTO) {
         Product existingProduct = productRepository.findById(orderDTO.getProduct().getId())
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
 
         Order order = new Order();
         order.setProduct(existingProduct);
