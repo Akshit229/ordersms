@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(ex.getStatusCode()).body(error);
     }
 
-    // Handle bad request/custom validation errors
+    // Handle bad request or custom validation errors
     @Hidden
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ApiError> handleBadRequestException(BadRequestException ex, HttpServletRequest request) {
@@ -61,8 +61,6 @@ public class GlobalExceptionHandler {
     @Hidden
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleGenericException(Exception ex, HttpServletRequest request) throws Exception {
-        String path = request.getRequestURI();
-
         ApiError error = new ApiError(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 HttpStatus.INTERNAL_SERVER_ERROR.toString(),

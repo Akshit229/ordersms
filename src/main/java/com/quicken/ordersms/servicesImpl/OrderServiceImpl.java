@@ -2,19 +2,16 @@ package com.quicken.ordersms.servicesImpl;
 
 import com.quicken.ordersms.dtos.OrderDTO;
 import com.quicken.ordersms.dtos.OrderStatusDTO;
-import com.quicken.ordersms.dtos.ProductDTO;
 import com.quicken.ordersms.entities.Order;
 import com.quicken.ordersms.entities.Product;
 import com.quicken.ordersms.enums.OrderStatus;
-import com.quicken.ordersms.exceptions.BadRequestException;
-import com.quicken.ordersms.mapper.OrderMapper;
+import com.quicken.ordersms.mappers.OrderMapper;
 import com.quicken.ordersms.repositories.OrderRepository;
 import com.quicken.ordersms.repositories.ProductRepository;
 import com.quicken.ordersms.services.OrderProcessingServiceAsync;
 import com.quicken.ordersms.services.OrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 

@@ -3,7 +3,7 @@ package com.quicken.ordersms.servicesImpl;
 import com.quicken.ordersms.dtos.ProductDTO;
 import com.quicken.ordersms.entities.Product;
 import com.quicken.ordersms.exceptions.BadRequestException;
-import com.quicken.ordersms.mapper.ProductMapper;
+import com.quicken.ordersms.mappers.ProductMapper;
 import com.quicken.ordersms.repositories.ProductRepository;
 import com.quicken.ordersms.services.ProductService;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

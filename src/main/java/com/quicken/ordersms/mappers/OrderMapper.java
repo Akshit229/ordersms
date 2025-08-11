@@ -1,13 +1,10 @@
-package com.quicken.ordersms.mapper;
+package com.quicken.ordersms.mappers;
 
 import com.quicken.ordersms.dtos.OrderDTO;
 import com.quicken.ordersms.dtos.OrderStatusDTO;
 import com.quicken.ordersms.entities.Order;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
-import org.springframework.stereotype.Service;
-
 
 @Mapper(componentModel = "spring")
 public interface OrderMapper {
